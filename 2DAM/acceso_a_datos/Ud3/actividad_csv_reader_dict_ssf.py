@@ -142,6 +142,11 @@ def lanza_valueerror(fila):
         writer = csv.DictWriter(f, fieldnames=["nombre"])
         # TODO 11: intenta writer.writerow(fila) dentro de un try; si salta ValueError devuelve True;
         # si todo va bien, devuelve False.
+        try:
+            writer.writerow(fila)
+            return False
+        except ValueError:
+            return True
         
 
 
@@ -156,13 +161,16 @@ def anadir_columna(origen, destino):
         filas = list(reader)
         # TODO 12: guarda en 'columnas' las columnas de entrada MÁS la nueva:
         # reader.fieldnames + ['goles_por_partido']   (fieldnames es una lista)
-        ...
+        columnas = reader.fieldnames + ['goles_por_partido']
     # TODO 13: a cada diccionario de 'filas' añádele la clave 'goles_por_partido' con
     # round(int(goles) / int(partidos), 2).
-    ...
+    for fila in filas:
+        fila['goles_por_partido'] = round(int(fila['goles']) / int(fila['partidos']), 2)
     with open(destino, "w", encoding="utf-8", newline="") as fw:
         # TODO 14: DictWriter con fieldnames=columnas; escribe cabecera y todas las filas.
-        ...
+        writer = csv.DictWriter(fw, fieldnames=columnas)
+        writer.writeheader()
+        writer.writerows(filas)
 
 
 # =========================================================
@@ -209,9 +217,14 @@ if __name__ == "__main__":
     # ------------------------------------------------------
     # PARA PENSAR (contesta en comentarios):
     #  a) En la Parte 1, ¿qué pasaría si no saltaras la cabecera con next(reader)?
+    #       daria error al intentar convertir a int la cadena "goles" de la cabecera.
     #  b) ¿Qué pasa en leer_sin_cabecera si olvidas fieldnames? ¿Y si olvidas delimiter=';'?
+    #       Si olvidas fieldnames, el DictReader tomará la primera fila como cabecera, y los datos se leerán mal. Si olvidas delimiter=';', el DictReader usará la coma como separador, y los datos se leerán mal.
     #  c) En escribir_goleadores, ¿qué ocurre si quitas extrasaction='ignore'?
+    #       Si quitas extrasaction='ignore', el DictWriter lanzará un ValueError al intentar escribir un diccionario que contiene claves que no están en fieldnames.
     #  d) En escribir_con_huecos, quita restval='-'. ¿Qué se escribe en los huecos?
+    #       Si quitas restval='-', se escribirá una cadena vacía en los huecos.
     #  e) Si el csv cambiara el orden de sus columnas, ¿qué funciones de las Partes 1 y 2 dejarían
     #     de funcionar? ¿Y las de DictReader?
+    #       Si el orden de las columnas cambia, las funciones que dependen del orden específico de las columnas dejarían de funcionar. Las funciones de DictReader no se verían afectadas, ya que usan los nombres de las columnas para acceder a los valores.
     # ------------------------------------------------------
