@@ -1,0 +1,5 @@
+Hola
+Acceso a Datos es mi modulo favorito
+Python
+seek y tell
+Fin
