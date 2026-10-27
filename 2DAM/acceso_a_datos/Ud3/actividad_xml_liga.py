@@ -77,13 +77,21 @@ def es_capitan(jugador):
     """True si el <jugador> tiene capitan='si'. Los que no tienen el atributo NO son capitanes."""
     # TODO 7: usa jugador.get('capitan', 'no') (el segundo argumento es el valor por defecto)
     # y compáralo con 'si'.  (jugador.attrib['capitan'] daría KeyError en los demás.)
-    ...
+    if(jugador.get("Capitan","no") == "si"):
+        return True
+    else:
+        return False
+    
 
 
 def jugador_por_nombre(raiz, nombre):
     """Devuelve el elemento <jugador> con ese nombre, o None si no existe."""
     # TODO 8: recorre './/jugador' y compara j.find('nombre').text con 'nombre'.
-    ...
+    for jugador in raiz.findall(".//jugador"):
+        if jugador.find("nombre").text == nombre:
+            return jugador
+        else:
+            return None
 
 
 # =========================================================
@@ -97,7 +105,9 @@ def subir_goles(raiz, nombre, cuantos):
         return False
     # TODO 9: el texto de <goles> es un str: conviértelo a int, súmale 'cuantos' y vuelve a
     # asignarlo como str:  elemento.text = str(...)
-    ...
+    num = int(jugador.find("goles").text)
+    num += cuantos
+    jugador.find("goles").text = str(num)
     return True
 
 
@@ -107,15 +117,23 @@ def fichar(raiz, nombre_equipo, nombre, posicion, goles=0, partidos=0):
     # TODO 10: crea el jugador con ET.SubElement(equipo, 'jugador', posicion=posicion) y, dentro
     # de él, los hijos 'nombre', 'goles' y 'partidos' con ET.SubElement(...).
     # Asigna el texto de cada uno (¡siempre str!: str(goles), str(partidos)).
-    ...
-
+    jugador = ET.SubElement(equipo,"jugador", posicion=posicion)
+    nombrelement = ET.SubElement(jugador, "nombre")
+    golelement = ET.SubElement(jugador, "goles")
+    partelement = ET.SubElement(jugador, "partidos")
+    nombrelement.text = nombre
+    golelement.text = str(goles)
+    partelement.text = str(partidos)
 
 def dar_de_baja(raiz, nombre):
     """Elimina del árbol al jugador con ese nombre. Devuelve True si lo encontró."""
     # TODO 11: ElementTree NO sabe cuál es el padre de un elemento. Hay que recorrer los <equipo>
     # y, dentro de cada uno, sus jugadores; al encontrar el nombre, borra con
     # equipo.remove(jugador).
-    ...
+    for equipo in raiz.findall("equipo"):
+        for jugador in equipo.findall("jugador"):
+            if jugador.find(nombre).text == nombre:
+                equipo.remove(jugador)
 
 
 # =========================================================
@@ -126,7 +144,7 @@ def guardar(raiz, destino):
     """Guarda el árbol en 'destino', bien sangrado y con la cabecera <?xml ...?>."""
     # TODO 12: ET.indent(raiz) sangra el árbol (para que sea legible);
     # ET.ElementTree(raiz).write(destino, encoding='utf-8', xml_declaration=True)
-    ...
+    
 
 
 def csv_a_xml(fichero_csv, destino):
