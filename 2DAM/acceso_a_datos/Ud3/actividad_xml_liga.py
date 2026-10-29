@@ -59,7 +59,7 @@ def goles_equipo(raiz, nombre_equipo):
     # TODO 5: findall con un predicado sobre el atributo:
     # f"./equipo[@nombre='{nombre_equipo}']/jugador"
     # Por cada jugador, suma int(jugador.find('goles').text)   (el texto es un str).
-    for jugador in raiz.findall("./equipo[@nombre='{nombre_equipo}']/jugador"):
+    for jugador in raiz.findall(f"./equipo[@nombre='{nombre_equipo}']/jugador"):
         total += int(jugador.find('goles').text)
     return total
 
@@ -77,7 +77,7 @@ def es_capitan(jugador):
     """True si el <jugador> tiene capitan='si'. Los que no tienen el atributo NO son capitanes."""
     # TODO 7: usa jugador.get('capitan', 'no') (el segundo argumento es el valor por defecto)
     # y compáralo con 'si'.  (jugador.attrib['capitan'] daría KeyError en los demás.)
-    if(jugador.get("Capitan","no") == "si"):
+    if(jugador.get("capitan","no") == "si"):
         return True
     else:
         return False
@@ -144,7 +144,8 @@ def guardar(raiz, destino):
     """Guarda el árbol en 'destino', bien sangrado y con la cabecera <?xml ...?>."""
     # TODO 12: ET.indent(raiz) sangra el árbol (para que sea legible);
     # ET.ElementTree(raiz).write(destino, encoding='utf-8', xml_declaration=True)
-    
+    ET.indent(raiz)
+    ET.ElementTree(raiz).write(destino, encoding='utf-8', xml_declaration=True)
 
 
 def csv_a_xml(fichero_csv, destino):
@@ -155,10 +156,20 @@ def csv_a_xml(fichero_csv, destino):
         for fila in csv.DictReader(f):
             # TODO 13: si el equipo de la fila aún no está en 'equipos', crea su <equipo> con
             # ET.SubElement(raiz, 'equipo', nombre=fila['equipo']) y guárdalo en el diccionario.
-            ...
+            if fila['equipo'] not in equipos:
+                equipos[fila['equipo']] = ET.SubElement(
+                    raiz, 'equipo', nombre=fila['equipo']
+                )
             # TODO 14: crea el <jugador> dentro de su equipo con el atributo posicion=fila['posicion'];
             # sus hijos <nombre>, <goles> y <partidos> con el texto correspondiente del csv.
-            ...
+            jugador = ET.SubElement(
+                equipos[fila['equipo']],
+                'jugador',
+                posicion=fila['posicion']
+            )
+            ET.SubElement(jugador, 'nombre').text = fila['nombre']
+            ET.SubElement(jugador, 'goles').text = fila['goles']
+            ET.SubElement(jugador, 'partidos').text = fila['partidos']
     guardar(raiz, destino)
 
 
