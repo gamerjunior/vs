@@ -10,8 +10,6 @@ with open('libros.csv', newline='', encoding='utf-8') as f:
     for fila in csv.DictReader(f):
         print(fila['titulo'], fila['anio'])   # acceso por nombre
 
-
-#writes
 with open('salida.csv', 'w', newline='', encoding='utf-8') as f:
     writer = csv.writer(f)
     writer.writerow(['isbn', 'titulo', 'autor'])     # la cabecera, a mano
