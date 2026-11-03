@@ -1,0 +1,110 @@
+{
+  "liga": "Liga Escolar de Torrent",
+  "temporada": "2025/26",
+  "equipos": [
+    {
+      "nombre": "Torrent CF",
+      "ciudad": "Torrent",
+      "fundado": 1922,
+      "capitan": "Marta Pérez",
+      "jugadores": [
+        {
+          "id": 1,
+          "nombre": "Marta Pérez",
+          "posicion": "delantera",
+          "goles": 12,
+          "activo": true,
+          "nota": 8.5
+        },
+        {
+          "id": 2,
+          "nombre": "Iván Soler",
+          "posicion": "portero",
+          "goles": 0,
+          "activo": true,
+          "nota": 7.0
+        },
+        {
+          "id": 3,
+          "nombre": "Lucía Ñíguez",
+          "posicion": "centrocampista",
+          "goles": 4,
+          "activo": false,
+          "nota": null
+        }
+      ]
+    },
+    {
+      "nombre": "Paterna Atlético",
+      "ciudad": "Paterna",
+      "fundado": 1975,
+      "capitan": null,
+      "jugadores": [
+        {
+          "id": 4,
+          "nombre": "Carlos Mora",
+          "posicion": "defensa",
+          "goles": 1,
+          "activo": true,
+          "nota": 6.5
+        },
+        {
+          "id": 5,
+          "nombre": "Noelia Gil",
+          "posicion": "delantera",
+          "goles": 9,
+          "activo": true,
+          "nota": 8.0
+        }
+      ]
+    },
+    {
+      "nombre": "Alaquàs Club",
+      "ciudad": "Alaquàs",
+      "fundado": 1988,
+      "capitan": "Pau Ferrer",
+      "jugadores": [
+        {
+          "id": 6,
+          "nombre": "Pau Ferrer",
+          "posicion": "centrocampista",
+          "goles": 5,
+          "activo": true,
+          "nota": 7.5
+        },
+        {
+          "id": 7,
+          "nombre": "Àngela Roig",
+          "posicion": "delantera",
+          "goles": 12,
+          "activo": true,
+          "nota": 9.0
+        },
+        {
+          "id": 8,
+          "nombre": "Joan Císcar",
+          "posicion": "defensa",
+          "goles": 0,
+          "activo": false,
+          "nota": null
+        }
+      ]
+    },
+    {
+      "nombre": "Picanya Unió",
+      "ciudad": "Picanya",
+      "fundado": 2001,
+      "capitan": "Sara Tormo",
+      "jugadores": [
+        {
+          "id": 9,
+          "nombre": "Aitana Boix",
+          "posicion": "defensa",
+          "goles": 2,
+          "activo": true,
+          "nota": null
+        }
+      ]
+    }
+  ]
+}

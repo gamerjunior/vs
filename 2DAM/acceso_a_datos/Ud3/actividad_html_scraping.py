@@ -31,13 +31,13 @@ FICHERO = "calidad_aire.html"
 
 # ---------------------------------------------------------
 # Esta función te la damos hecha: así se descargaría una página real.
-# Hoy NO la usamos. Fíjate en las buenas prácticas: User-Agent, timeout, código de estado.
+# Hoy NO la usamos.
 # ---------------------------------------------------------
 def descargar(url):
     import requests
     cabeceras = {"User-Agent": "practicas-2DAM (aula; contacto: profesor@centro.example)"}
     respuesta = requests.get(url, headers=cabeceras, timeout=10)
-    respuesta.raise_for_status()          # lanza excepción si el código no es 2xx
+    respuesta.raise_for_status()
     return respuesta.text
 
 
@@ -47,7 +47,7 @@ def descargar(url):
 
 def abrir_html(nombre_fichero):
     """Devuelve el objeto BeautifulSoup de la página."""
-    # TODO 1: abre el fichero (encoding='utf-8'), lee TODO el texto con read() y devuelve beatutifulsoup(texto, "html.parser").
+    # TODO 1: abre el fichero (encoding='utf-8'), lee TODO el texto con read() y devuelve
     with open(nombre_fichero, "r", encoding="utf-8") as f:
         texto = f.read()
     return BeautifulSoup(texto, "html.parser")
@@ -62,30 +62,38 @@ def titulo_pagina(soup):
 
 def licencia(soup):
     """Texto del elemento con id='licencia'."""
-    # TODO 3: Obtén el texto del elemento con el selector CSS #licencia.
-    soup_licncia=soup.find(id="licencia") #metodo propio
-    #soup_licencia = soup.select_one("#licencia") metodo de la ia
-    
-    
+# TODO 3: Obtén el texto del elemento con el selector CSS #licencia.    
+    elemento = soup.find(id="licencia")
+    return elemento.get_text(strip=True)
+
 
 # =========================================================
 # PARTE 2 · Extraer listas de elementos
 # =========================================================
 
 def estaciones(soup):
-    """Lista de diccionarios {'codigo', 'nombre', 'municipio', 'enlace'} de cada <div class='estacion'>."""
+    """Lista de diccionarios de las estaciones."""
     resultado = []
+
     # TODO 4: recorre todos los div de clase estación y devuelve un diccionario con:
     #   - código
     #   - nombre
     #   - municipio
     #   - enlace
-    for div in soup.find("div", class_="estacion"):
+        
+    for div in soup.find_all("div", class_="estacion"):
         codigo = div["data-codigo"]
         nombre = div.find("h2").get_text(strip=True)
-        municipio = div.find("p").get_text(strip=True)
-        enlace = div.find("a")["href"]
-        resultado.append({"codigo": codigo, "nombre": nombre, "municipio": municipio, "enlace": enlace})
+        municipio = div.find("p", class_="municipio").get_text(strip=True)
+        enlace = div.find("a").get("href")
+
+        resultado.append({
+            "codigo": codigo,
+            "nombre": nombre,
+            "municipio": municipio,
+            "enlace": enlace
+        })
+
     return resultado
 
 
@@ -99,23 +107,33 @@ def a_numero(texto):
 
 
 def leer_mediciones(soup):
-    """Lista de diccionarios, uno por fila de la tabla 'mediciones'.
-    Claves: estacion, fecha, hora, pm10, no2, o3 (los tres últimos float o None)."""
+    """Lee las filas de mediciones y devuelve una lista de diccionarios."""
     mediciones = []
+
     # TODO 6: recorre las filas del cuerpo de la tabla con soup.select('table#mediciones tbody tr').
     # De cada fila saca el texto de sus <td> en una lista:
     # celdas = [td.get_text(strip=True) for td in fila.find_all('td')]
     # y construye el diccionario (usa a_numero para pm10, no2 y o3).
     
-    for fila in soup.select('table#mediciones tbody tr'):
-        celdas = [td.get_text(strip=True) for td in fila.find_all('td')]
+    for fila in soup.select("table#mediciones tbody tr"):
+        celdas = [td.get_text(strip=True) for td in fila.find_all("td")]
+
         estacion = celdas[0]
         fecha = celdas[1]
         hora = celdas[2]
         pm10 = a_numero(celdas[3])
         no2 = a_numero(celdas[4])
         o3 = a_numero(celdas[5])
-        mediciones.append({"estacion": estacion, "fecha": fecha, "hora": hora, "pm10": pm10, "no2": no2, "o3": o3})
+
+        mediciones.append({
+            "estacion": estacion,
+            "fecha": fecha,
+            "hora": hora,
+            "pm10": pm10,
+            "no2": no2,
+            "o3": o3
+        })
+
     return mediciones
 
 
@@ -127,22 +145,24 @@ def estaciones_en_alerta(soup):
         fila.find("td").get_text(strip=True)
         for fila in soup.select("tr.alerta")
     ]
+
     return sorted(set(codigos))
 
 
 def media_pm10(mediciones):
     """Media de PM10 ignorando los datos que faltan (None)."""
     # TODO 8: crea una lista con los pm10 que NO sean None y calcula la media (redondeada a 2 decimales).
-    pm10list = []
-    for pm10 in mediciones["pm10"]:
-        if pm10 != "-":
-            pm10list.append(pm10)
+    valores_pm10 = []
 
-    for i in range(len(pm10list)):
-        pm10list[i] = float(pm10list[i])
-    media = sum(pm10list) / len(pm10list)
+    for medicion in mediciones:
+        if medicion["pm10"] is not None:
+            valores_pm10.append(medicion["pm10"])
+
+    if len(valores_pm10) == 0:
+        return None
+
+    media = sum(valores_pm10) / len(valores_pm10)
     return round(media, 2)
-        
 
 
 # =========================================================
@@ -150,40 +170,63 @@ def media_pm10(mediciones):
 # =========================================================
 
 def a_xml(lista_estaciones, mediciones, texto_licencia, destino):
-    """Escribe en 'destino' un XML con esta forma:
+    """Escribe en 'destino' el XML con las estaciones y mediciones."""
 
-    <calidad_aire licencia="...">
-      <estaciones>
-        <estacion codigo="T01" municipio="Torrent">Torrent Centro</estacion> ...
-      </estaciones>
-      <mediciones>
-        <medicion estacion="T01" fecha="2026-10-20" hora="08:00">
-          <pm10>23.5</pm10><no2>41.0</no2><o3>35.2</o3>
-        </medicion> ...
-      </mediciones>
-    </calidad_aire>
-
-    Si un valor falta (None), NO se crea su elemento."""
     # TODO 9: crea la raíz con ET.Element('calidad_aire', licencia=texto_licencia) y el hijo <estaciones>
     # (ET.SubElement). Por cada estación crea un <estacion codigo=... municipio=...> con
     # el nombre como texto.
-    raiz = ET.element("calidad_aire", licencia=texto_licencia)
-    
-    
+    raiz = ET.Element("calidad_aire", licencia=texto_licencia)
+    nodo_estaciones = ET.SubElement(raiz, "estaciones")
+
+    for estacion in lista_estaciones:
+        nodo_estacion = ET.SubElement(
+            nodo_estaciones,
+            "estacion",
+            codigo=estacion["codigo"],
+            municipio=estacion["municipio"]
+        )
+        nodo_estacion.text = estacion["nombre"]
+
     # TODO 10: crea el hijo <mediciones>. Por cada medición crea un <medicion estacion= fecha= hora=>
     # y, dentro, un elemento por cada valor (pm10, no2, o3) que NO sea None.
     # Recuerda: el texto debe ser str -> str(valor).
-    ...
+    
+    nodo_mediciones = ET.SubElement(raiz, "mediciones")
+
+    for medicion in mediciones:
+        nodo_medicion = ET.SubElement(
+            nodo_mediciones,
+            "medicion",
+            estacion=medicion["estacion"],
+            fecha=medicion["fecha"],
+            hora=medicion["hora"]
+        )
+
+        for nombre_valor in ("pm10", "no2", "o3"):
+            valor = medicion[nombre_valor]
+
+            if valor is not None:
+                nodo_valor = ET.SubElement(nodo_medicion, nombre_valor)
+                nodo_valor.text = str(valor)
+
     # TODO 11: ET.indent(raiz) y guarda con ET.ElementTree(raiz).write(destino, encoding='utf-8',
     # xml_declaration=True)
-    ...
+    
+    ET.indent(raiz)
+    arbol = ET.ElementTree(raiz)
+    arbol.write(destino, encoding="utf-8", xml_declaration=True)
 
 
 def comprobar_xml(destino):
-    """Vuelve a leer el XML generado y devuelve (nº de <medicion>, nº de elementos <pm10>)."""
+    """Devuelve (nº de <medicion>, nº de elementos <pm10>)."""
     # TODO 12: lee el fichero con ET.parse(destino).getroot() y cuenta con findall:
-    # './mediciones/medicion'  y  './/pm10'
-    ...
+    # './mediciones/medicion'  y  './/pm10'    
+    raiz = ET.parse(destino).getroot()
+
+    numero_mediciones = len(raiz.findall("./mediciones/medicion"))
+    numero_pm10 = len(raiz.findall(".//pm10"))
+
+    return numero_mediciones, numero_pm10
 
 
 # =========================================================
@@ -213,13 +256,25 @@ if __name__ == "__main__":
 
     print("✅ Todo correcto")
 
-    # ------------------------------------------------------
-    # PARA PENSAR (contesta en comentarios):
+    # PARA PENSAR:
     #  a) ¿Qué devuelve soup.find('table', id='noexiste')? ¿Y si encadenas .get_text()?
+    #       soup.find('table', id='noexiste') devuelve None.
+    #       Si encadenas .get_text(), se produce un AttributeError porque None no tiene ese método.
+    
     #  b) ¿Qué diferencia hay entre find() y find_all()? ¿Y entre select() y select_one()?
-    #  c) Si la web cambiara la clase 'estacion' por 'estacion-card', ¿qué parte de tu código se rompe?
+    #       find() devuelve el primer elemento que coincide; find_all() devuelve una lista con todos los elementos que coinciden. select() usa selectores CSS y devuelve una lista; select_one() devuelve solo el primer elemento que coincide.
+    #  
+    # c) Si la web cambiara la clase 'estacion' por 'estacion-card', ¿qué parte de tu código se rompe?
     #     ¿Cómo lo detectarías antes de que falle en silencio?
+    #       Se rompería la búsqueda de estaciones en soup.find_all("div", class_="estacion"). Se puede detectar comprobando que la lista no esté vacía y que tenga el número esperado de estaciones.
+    #
     #  d) ¿Por qué usamos una copia local del HTML? ¿Qué pasaría con una web real que cambia a diario?
+    #       Usamos una copia local para que el ejercicio siempre funcione igual y no dependa de Internet ni de cambios en una web. Una web real puede cambiar su estructura o sus datos cada día y el código podría dejar de encontrar los elementos.
+    #
     #  e) Mira los 7 valores de PM10 y los 8 <medicion>: ¿por qué no creamos <pm10>None</pm10>?
+    #       No creamos <pm10>None</pm10> porque None representa que no hay dato. Por eso, cuando falta el valor, no se crea el elemento <pm10>.
+    #
     #  f) Antes de raspar una web real: ¿dónde miras si te dejan hacerlo? (robots.txt, condiciones de uso)
-    # ------------------------------------------------------
+    #       Antes de hacer scraping hay que consultar robots.txt y las condiciones de uso de la página web.
+
+   
