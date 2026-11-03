@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Calidad del aire · Red de estaciones (ejemplo)</title>
+</head>
+<body>
+  <h1>Red de vigilancia de la calidad del aire</h1>
+  <p class="aviso">Página de ejemplo con datos ficticios para practicar scraping.</p>
+
+  <section id="estaciones">
+    <h2>Estaciones</h2>
+    <div class="estacion" data-codigo="T01">
+      <h2>Torrent Centro</h2>
+      <p class="municipio">Torrent</p>
+      <a href="/estaciones/T01">Ver ficha</a>
+    </div>
+    <div class="estacion" data-codigo="T02">
+      <h2>Torrent Parque</h2>
+      <p class="municipio">Torrent</p>
+      <a href="/estaciones/T02">Ver ficha</a>
+    </div>
+    <div class="estacion" data-codigo="P01">
+      <h2>Paterna Polígono</h2>
+      <p class="municipio">Paterna</p>
+      <a href="/estaciones/P01">Ver ficha</a>
+    </div>
+    <div class="estacion" data-codigo="V01">
+      <h2>València Centro</h2>
+      <p class="municipio">València</p>
+      <a href="/estaciones/V01">Ver ficha</a>
+    </div>
+  </section>
+
+  <section id="datos">
+    <h2>Mediciones horarias (µg/m³)</h2>
+    <table id="mediciones">
+      <thead>
+        <tr><th>Estación</th><th>Fecha</th><th>Hora</th><th>PM10</th><th>NO2</th><th>O3</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>T01</td><td>2026-10-20</td><td>08:00</td><td>23.5</td><td>41.0</td><td>35.2</td></tr>
+        <tr><td>T01</td><td>2026-10-20</td><td>09:00</td><td>28.1</td><td>47.3</td><td>30.0</td></tr>
+        <tr class="alerta"><td>T02</td><td>2026-10-20</td><td>08:00</td><td>61.4</td><td>52.8</td><td>-</td></tr>
+        <tr><td>T02</td><td>2026-10-20</td><td>09:00</td><td>-</td><td>49.1</td><td>28.7</td></tr>
+        <tr><td>P01</td><td>2026-10-20</td><td>08:00</td><td>35.0</td><td>60.2</td><td>22.4</td></tr>
+        <tr class="alerta"><td>P01</td><td>2026-10-20</td><td>09:00</td><td>55.9</td><td>63.7</td><td>20.1</td></tr>
+        <tr><td>V01</td><td>2026-10-20</td><td>08:00</td><td>30.2</td><td>58.4</td><td>25.5</td></tr>
+        <tr><td>V01</td><td>2026-10-20</td><td>09:00</td><td>33.8</td><td>-</td><td>27.9</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <p id="licencia">Datos publicados bajo licencia CC BY 4.0. Fuente: Red de estaciones (ejemplo).</p>
+</body>
+</html>

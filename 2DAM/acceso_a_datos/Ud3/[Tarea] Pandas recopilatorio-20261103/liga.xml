@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liga nombre="Liga Escolar" temporada="2025-26">
+  <equipo id="1" nombre="Rayos" ciudad="Torrent">
+    <jugador dorsal="9" posicion="Delantera" capitan="si">
+      <nombre>Ana Ruiz</nombre>
+      <goles>12</goles>
+      <partidos>10</partidos>
+    </jugador>
+    <jugador dorsal="1" posicion="Portero">
+      <nombre>Luis Perez</nombre>
+      <goles>0</goles>
+      <partidos>10</partidos>
+    </jugador>
+    <jugador dorsal="4" posicion="Defensa">
+      <nombre>Soler, Eva</nombre>
+      <goles>1</goles>
+      <partidos>7</partidos>
+    </jugador>
+    <jugador dorsal="8" posicion="Centrocampista">
+      <nombre>Iker Bosch</nombre>
+      <goles>7</goles>
+      <partidos>10</partidos>
+    </jugador>
+  </equipo>
+  <equipo id="2" nombre="Halcones" ciudad="València">
+    <jugador dorsal="10" posicion="Delantera" capitan="si">
+      <nombre>Marta Gil</nombre>
+      <goles>9</goles>
+      <partidos>9</partidos>
+    </jugador>
+    <jugador dorsal="3" posicion="Defensa">
+      <nombre>Pau Ferrer</nombre>
+      <goles>2</goles>
+      <partidos>10</partidos>
+    </jugador>
+    <jugador dorsal="6" posicion="Centrocampista">
+      <nombre>Hugo Sanz</nombre>
+      <goles>6</goles>
+      <partidos>10</partidos>
+    </jugador>
+  </equipo>
+  <equipo id="3" nombre="Lobos" ciudad="Paterna">
+    <jugador dorsal="7" posicion="Centrocampista">
+      <nombre>Sara Mon</nombre>
+      <goles>5</goles>
+      <partidos>8</partidos>
+    </jugador>
+    <jugador dorsal="11" posicion="Delantera" capitan="si">
+      <nombre>Raul Diaz</nombre>
+      <goles>14</goles>
+      <partidos>10</partidos>
+    </jugador>
+    <jugador dorsal="1" posicion="Portero">
+      <nombre>Nuria Vega</nombre>
+      <goles>0</goles>
+      <partidos>9</partidos>
+    </jugador>
+  </equipo>
+</liga>

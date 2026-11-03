@@ -1,0 +1,6 @@
+0001Tintin              12.50    3
+0002Asterix              9.95   10
+0003Mortadelo            7.00    0
+0004Superlopez           8.25    4
+0005Blacksad            24.90    2
+0006Mafalda             15.00    6
