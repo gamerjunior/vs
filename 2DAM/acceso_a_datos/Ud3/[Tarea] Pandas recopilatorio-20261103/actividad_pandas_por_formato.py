@@ -40,7 +40,7 @@ def leer_csv(ruta):
     """Devuelve un DataFrame con jugadores.csv."""
     # TODO 1: pd.read_csv(ruta). Fíjate: pandas se encarga solo de "Soler, Eva" (la coma entre comillas)
     # y de convertir goles y partidos a números.
-    ...
+    pd.read_csv(ruta)
 
 
 def goleador(df):

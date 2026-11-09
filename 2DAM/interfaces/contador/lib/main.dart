@@ -11,6 +11,7 @@ class Contador extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Contador",
+      debugShowCheckedModeBanner: false,
       home: Home(),
     );
   }
@@ -26,10 +27,11 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text("Contador"),
+        leading: Icon(Icons.menu),
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: .center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text("Veces pulsado"),
             Center(

@@ -88,10 +88,10 @@ def jugador_por_nombre(raiz, nombre):
     """Devuelve el elemento <jugador> con ese nombre, o None si no existe."""
     # TODO 8: recorre './/jugador' y compara j.find('nombre').text con 'nombre'.
     for jugador in raiz.findall(".//jugador"):
-        if jugador.find("nombre").text == nombre:
+        nombre = jugador.find("nombre")
+        if nombre is not None and nombre.text == nombre:
             return jugador
-        else:
-            return None
+    return None
 
 
 # =========================================================
