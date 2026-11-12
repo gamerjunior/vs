@@ -1,67 +1,28 @@
 import 'package:flutter/material.dart';
 
-class ContadorBoton extends StatefulWidget {
+class ContadorBoton extends StatelessWidget {
   const ContadorBoton({
     super.key,
-    required this.color,
     required this.buttonColor,
+    required this.onPressed,
+    required this.icono,
   });
 
-  final Color color;
   final Color buttonColor;
-
-  @override
-  State<ContadorBoton> createState() => _ContadorBotonState();
-}
-
-class _ContadorBotonState extends State<ContadorBoton> {
-  int contador = 0;
+  final VoidCallback onPressed;
+  final Icon icono;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: widget.buttonColor,
-            ),
-            onPressed: () {
-              setState(() {
-                contador++;
-              });
-            },
-            child: const Text('+',
-              style: TextStyle(
-                  color: Color(0xFFFFFFFF)
-            )),
-          ),
-          Container(
-            color: widget.color,
-            height: 100,
-            alignment: Alignment.center,
-            child: Text('$contador',
-              style: TextStyle(
-                  color: Color(0xFFFFFFFF)
-            )),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: widget.buttonColor,
-            ),
-            onPressed: () {
-              setState(() {
-                contador--;
-              });
-            },
-            child: const Text('-',
-              style: TextStyle(
-                  color: Color(0xFFFFFFFF)
-            )),
-          ),
-        ],
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        minimumSize: const Size(150, 150),
+        backgroundColor: buttonColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))
       ),
+      onPressed: onPressed,
+      child: icono
     );
   }
 }
