@@ -172,7 +172,27 @@ def html_a_objetos(editor):
     Args:
         editor(ScrolledText): zona para editar/visualizar datos
     '''
-    pass
+    try:
+        productos = []
+        str_html_editor = editor.get('1.0', 'end')
+
+        if str_html_editor =='\n':
+            raise Exception('No hay libros o se ha cargado un html no compatible.')
+        
+        soup = BeautifulSoup(str_html_editor, 'html.parser')
+        productos_html = soup.find_all('libro') # retorna una lista de productos
+        for producto_html in productos_html:
+            productos.append(extraer_producto_de_xml(producto_html))
+        if not productos:
+            raise Exception("No hay libros o se ha cargado un html no compatible.")
+    except Exception as e:
+        tmb.showerror("Error", f'{e}')
+    else:
+        editor.delete('1.0','end')
+        texto_a_insertar = ''
+        for producto in productos:
+            texto_a_insertar += str(producto) + '\n'
+        editor.insert(f'1.0',texto_a_insertar)
 
 
 def objetos_a_html(editor):
@@ -180,7 +200,54 @@ def objetos_a_html(editor):
     Args:
         editor(ScrolledText): zona para editar/visualizar datos
     '''
-    pass
+    try:
+        # creamos el elemento raíz
+        raiz_html = BeautifulSoup('<libreria></libreria>', 'html.parser')
+
+        # leemos los objetos del editor
+        texto_objetos = editor.get('1.0','end')
+        lista_objetos = texto_objetos.split(sep='\n')
+
+        # quito basura 
+        while True:
+            try:
+                lista_objetos.remove('')
+            except ValueError:
+                break
+    
+        if not lista_objetos:
+            raise Exception("No hay objetos.")
+        
+    except Exception as e:
+        tmb.showerror("Error", f'{e}')
+
+    else:
+        # creamos elementos libro
+        for libro in lista_objetos:
+            try:
+                objeto_producto = eval(libro)
+            except Exception as e:
+                tmb.showerror("Error", f'{e}')
+            else:
+                libro_html = raiz_html.new_tag('libro', genero=objeto_producto.genero)
+                titulo_html = raiz_html.new_tag('titulo')
+                titulo_html.string = objeto_producto.titulo
+                autor_html = raiz_html.new_tag('autor')
+                autor_html.string = objeto_producto.autor
+                precio_html = raiz_html.new_tag('precio')
+                precio_html.string = str(objeto_producto.precio)
+                disponible_html = raiz_html.new_tag('disponible')
+                disponible_html.string = "si" if objeto_producto.disponible else "no"
+
+                libro_html.extend([titulo_html, autor_html, precio_html, disponible_html])
+                raiz_html.libreria.append(libro_html)
+
+        # generamos la cadena con la raiz
+        str_html = raiz_html.prettify()
+
+        # mostramos en el editor
+        editor.delete(1.0,'end')
+        editor.insert('1.0', str_html)
 
 
 def csv_a_objetos(editor):
@@ -188,7 +255,28 @@ def csv_a_objetos(editor):
     Args:
         editor(ScrolledText): zona para editar/visualizar datos
     '''
-    pass
+    try:
+        productos = []
+        str_csv_editor = editor.get('1.0', 'end')
+
+        if str_csv_editor =='\n':
+            raise Exception('No hay libros o se ha cargado un csv no compatible.')
+        
+        # usamos io.StringIO para tratar el texto como un archivo
+        f = io.StringIO(str_csv_editor)
+        reader = csv.DictReader(f, delimiter=';')
+        for row in reader:
+            productos.append(como_productos(row))
+        if not productos:
+            raise Exception("No hay libros o se ha cargado un csv no compatible.")
+    except Exception as e:
+        tmb.showerror("Error", f'{e}')
+    else:
+        editor.delete('1.0','end')
+        texto_a_insertar = ''
+        for producto in productos:
+            texto_a_insertar += str(producto) + '\n'
+        editor.insert(f'1.0',texto_a_insertar)
 
 
 def objetos_a_csv(editor):
@@ -196,7 +284,41 @@ def objetos_a_csv(editor):
     Args:
         editor(ScrolledText): zona para editar/visualizar datos
     '''
-    pass
+    try:
+        # leemos los objetos del editor
+        texto_objetos = editor.get('1.0','end')
+        lista_objetos = texto_objetos.split(sep='\n')
+
+        # quito basura 
+        while True:
+            try:
+                lista_objetos.remove('')
+            except ValueError:
+                break
+    
+        if not lista_objetos:
+            raise Exception("No hay objetos.")
+        
+    except Exception as e:
+        tmb.showerror("Error", f'{e}')
+
+    else:
+        # usamos io.StringIO para tratar el texto como un archivo
+        f = io.StringIO()
+        writer = csv.DictWriter(f, fieldnames=['genero', 'titulo', 'autor', 'precio', 'disponible'], delimiter=';')
+        writer.writeheader()
+
+        for libro in lista_objetos:
+            try:
+                objeto_producto = eval(libro)
+            except Exception as e:
+                tmb.showerror("Error", f'{e}')
+            else:
+                writer.writerow(dict(genero=objeto_producto.genero, titulo=objeto_producto.titulo, autor=objeto_producto.autor, precio=objeto_producto.precio, disponible=objeto_producto.disponible))
+
+        # mostramos en el editor
+        editor.delete(1.0,'end')
+        editor.insert('1.0', f.getvalue())
 
 
 def como_productos(dct):
@@ -221,7 +343,26 @@ def json_a_objetos(editor):
     Args:
         editor(ScrolledText): zona para editar/visualizar datos
     '''
-    pass
+    try:
+        productos = []
+        str_json_editor = editor.get('1.0', 'end')
+
+        if str_json_editor =='\n':
+            raise Exception('No hay libros o se ha cargado un json no compatible.')
+        
+        lista_dicts = json.loads(str_json_editor)
+        for dct in lista_dicts:
+            productos.append(como_productos(dct))
+        if not productos:
+            raise Exception("No hay libros o se ha cargado un json no compatible.")
+    except Exception as e:
+        tmb.showerror("Error", f'{e}')
+    else:
+        editor.delete('1.0','end')
+        texto_a_insertar = ''
+        for producto in productos:
+            texto_a_insertar += str(producto) + '\n'
+        editor.insert(f'1.0',texto_a_insertar)
 
 
 def objetos_a_json(editor):
@@ -229,7 +370,40 @@ def objetos_a_json(editor):
     Args:
         editor(ScrolledText): zona para editar/visualizar datos
     '''
-    pass
+    try:
+        # leemos los objetos del editor
+        texto_objetos = editor.get('1.0','end')
+        lista_objetos = texto_objetos.split(sep='\n')
+
+        # quito basura 
+        while True:
+            try:
+                lista_objetos.remove('')
+            except ValueError:
+                break
+    
+        if not lista_objetos:
+            raise Exception("No hay objetos.")
+        
+    except Exception as e:
+        tmb.showerror("Error", f'{e}')
+
+    else:
+        lista_productos = []
+        for libro in lista_objetos:
+            try:
+                objeto_producto = eval(libro)
+            except Exception as e:
+                tmb.showerror("Error", f'{e}')
+            else:
+                lista_productos.append(objeto_producto)
+
+        # generamos el texto json
+        str_json = json.dumps(lista_productos, cls=ProductoEncoder, indent=4)
+
+        # mostramos en el editor
+        editor.delete(1.0,'end')
+        editor.insert('1.0', str_json)
 
 # VARIABLE GLOBAL
 lista_objetos_pickle = []
@@ -241,7 +415,25 @@ def pickle_a_objetos(editor):
     Args:
         editor(ScrolledText): zona para editar/visualizar datos
     '''
-    pass
+    try:
+        productos = []
+        str_pickle_editor = editor.get('1.0', 'end')
+
+        if str_pickle_editor =='\n':
+            raise Exception('No hay libros o se ha cargado un pickle no compatible.')
+        
+        for obj in lista_objetos_pickle:
+            productos.append(obj)
+        if not productos:
+            raise Exception("No hay libros o se ha cargado un pickle no compatible.")
+    except Exception as e:
+        tmb.showerror("Error", f'{e}')
+    else:
+        editor.delete('1.0','end')
+        texto_a_insertar = ''
+        for producto in productos:
+            texto_a_insertar += str(producto) + '\n'
+        editor.insert(f'1.0',texto_a_insertar)
 
 def objetos_a_pickle(editor):
     '''serializa los objetos del editor a pickle (muestra el resultado en el editor)
@@ -250,7 +442,41 @@ def objetos_a_pickle(editor):
     Args:
         editor(ScrolledText): zona para editar/visualizar datos
     '''
-    pass
+    try:
+        # leemos los objetos del editor
+        texto_objetos = editor.get('1.0','end')
+        lista_objetos = texto_objetos.split(sep='\n')
+
+        # quito basura 
+        while True:
+            try:
+                lista_objetos.remove('')
+            except ValueError:
+                break
+    
+        if not lista_objetos:
+            raise Exception("No hay objetos.")
+        
+    except Exception as e:
+        tmb.showerror("Error", f'{e}')
+
+    else:
+        global lista_objetos_pickle
+        lista_objetos_pickle = []
+        for libro in lista_objetos:
+            try:
+                objeto_producto = eval(libro)
+            except Exception as e:
+                tmb.showerror("Error", f'{e}')
+            else:
+                lista_objetos_pickle.append(objeto_producto)
+
+        # generamos el texto pickle
+        str_pickle = pickle.dumps(lista_objetos_pickle)
+
+        # mostramos en el editor
+        editor.delete(1.0,'end')
+        editor.insert('1.0', str_pickle)
 
 #
 # INTERFAZ GRÁFICA
