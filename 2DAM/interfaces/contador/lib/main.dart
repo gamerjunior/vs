@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'screens/home.dart';
+import 'themes/theme.dart';
+
 void main() {
   runApp(const Contador());
 }
@@ -10,27 +13,10 @@ class Contador extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Contador",
-      home: Home(),
+      theme: appTheme,
+      title: 'Contador',
+      home: const Home(),
     );
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Contador"),
-      ),
-      body: Center(
-        child: Text("contador"),
-      ),
-    ) 
-  }
-
-}
