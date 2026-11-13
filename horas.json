@@ -1,0 +1,26 @@
+{
+  "fichajes_validos": 3,
+  "empleados": [
+    {
+      "id": "E01",
+      "nombre": "Lucía Pons",
+      "departamento": "Taller",
+      "horas": 8.5,
+      "importe": 85.0
+    },
+    {
+      "id": "E02",
+      "nombre": "Raúl Mir",
+      "departamento": "Oficina",
+      "horas": 8.0,
+      "importe": 120.0
+    },
+    {
+      "id": "E03",
+      "nombre": "Nuria Vila",
+      "departamento": "Taller",
+      "horas": 0.0,
+      "importe": 0.0
+    }
+  ]
+}

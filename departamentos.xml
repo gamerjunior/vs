@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<departamentos>
+  <departamento nombre="Oficina" empleados="1" horas="8.00" importe="120.00" />
+  <departamento nombre="Taller" empleados="2" horas="8.50" importe="85.00" />
+</departamentos>
