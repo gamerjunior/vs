@@ -1,5 +1,3 @@
-Hola
-Acceso a Datos es mi modulo favorito
-Python
+HolaAcceso a Datos es mi modulo favoritoPython
 seek y tell
 Fin

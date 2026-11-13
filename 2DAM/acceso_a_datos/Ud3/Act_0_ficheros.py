@@ -17,8 +17,8 @@ FICHERO = "frases.txt"
 
 # El programa crea el fichero de prueba por ti (no hace falta tocarlo)
 with open(FICHERO, "w", encoding="utf-8", newline="") as f:
-    f.write("Hola\n")
-    f.write("Acceso a Datos es mi modulo favorito\n")
+    f.write("Hola")
+    f.write("Acceso a Datos es mi modulo favorito")
     f.write("Python\n")
     f.write("seek y tell\n")
     f.write("Fin\n")

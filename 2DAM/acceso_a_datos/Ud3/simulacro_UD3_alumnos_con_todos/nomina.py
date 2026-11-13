@@ -1,6 +1,8 @@
 import csv
 import json
 import xml.etree.ElementTree as ET
+from datetime import date
+from datetime import time
 
 FICHERO_EMPLEADOS = "empleados.json"
 FICHERO_FICHAJES = "fichajes.csv"
@@ -11,6 +13,7 @@ FICHERO_DEPARTAMENTOS = "departamentos.xml"
 
 def minutos(hora):
     # TODO 1
+    #otra forma try: t = time.fromisoformat(hora) total = t.hour*60+t.minute except ValueError: pass raise ValueError("hora invalida")
     datos = hora.split(":")
     try:
         if len(datos) == 2 and len(datos[0]) == 2 and len(datos[1]) == 2:
@@ -27,6 +30,7 @@ def minutos(hora):
 
 def fecha_valida(f):
     # TODO 2
+    #otra forma de hacerlo try: d = date.fromisoformat(f) return true except ValueError: return false
     datos = f.split("-")
     try:
         if len(datos) == 3 and datos[0].isdigit() and len(datos[0]) == 4 and datos[1].isdigit() and len(datos[1]) == 2 and datos[0].isdigit() and len(datos[2]) == 2:

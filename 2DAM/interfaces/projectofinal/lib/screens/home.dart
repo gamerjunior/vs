@@ -43,37 +43,54 @@ class _HomeState extends State<Home> {
     });
   }
 
-
+  void reiniciarMarcador() {
+    setState(() {
+      contadorLocal = 0;
+      contadorVisitante = 0;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: fondo,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Contador'),
+        backgroundColor: fondo,
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(children: [
+            Icon(Icons.sports_basketball_outlined, color: iconogeneral,),
+            Text("Contador", style: TextStyle(color: textogeneral),)
+          ],),
+        ),
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: Column(
         children: [
-          Contador(
-            contador: contadorLocal,
-            color: local,
-            botoncolor: localBoton,
-            iconoColor: iconogeneral,
-            sumar: sumarLocal,
-            restar: restarLocal,
-            equipo: "local"
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Contador(
+                contador: contadorLocal,
+                color: local,
+                botoncolor: localBoton,
+                iconoColor: iconogeneral,
+                sumar: sumarLocal,
+                restar: restarLocal,
+                equipo: "local"
+              ),
+              Contador(
+                contador: contadorVisitante,
+                color: visitante,
+                botoncolor: visitanteBoton,
+                iconoColor: iconogeneral,
+                sumar: sumarVisitante,
+                restar: restarVisitante,
+                equipo: "Visitante"
+              ),
+            ],
           ),
-          Contador(
-            contador: contadorVisitante,
-            color: visitante,
-            botoncolor: visitanteBoton,
-            iconoColor: iconogeneral,
-            sumar: sumarVisitante,
-            restar: restarVisitante,
-            equipo: "Visitante"
-          ),
+          Spacer(),
+          reiniciar(onPressed: reiniciarMarcador)
         ],
       ),
     );

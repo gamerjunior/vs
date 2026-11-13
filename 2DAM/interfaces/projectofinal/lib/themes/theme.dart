@@ -6,6 +6,10 @@ const Color localBoton = Colors.blue;
 const Color visitanteBoton = Colors.red;
 const Color iconogeneral = Color(0xFFFFFFFF);
 const Color textogeneral = Color(0xFFFFFFFF);
+const Color fondo = Colors.black;
+const Color extra = Color.fromARGB(255, 41, 38, 38);
+
+
 final ThemeData appTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+  colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 0, 0, 0)),
 );
