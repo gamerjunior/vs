@@ -13,6 +13,7 @@ class Myapp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: appTheme,
       title: 'Contador',
       home: const Home(),

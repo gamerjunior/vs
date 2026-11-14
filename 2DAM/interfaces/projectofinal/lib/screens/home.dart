@@ -60,12 +60,17 @@ class _HomeState extends State<Home> {
           padding: const EdgeInsets.all(8.0),
           child: Row(children: [
             Icon(Icons.sports_basketball_outlined, color: iconogeneral,),
-            Text("Contador", style: TextStyle(color: textogeneral),)
+            Text("  Marcador", style: TextStyle(color: textogeneral),)
           ],),
         ),
       ),
       body: Column(
         children: [
+          ContadorSuperior(
+            contadorLocal: contadorLocal,
+            contadorVisitante: contadorVisitante,
+          ),
+          Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

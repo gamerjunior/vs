@@ -18,7 +18,7 @@ class ContadorBoton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        minimumSize: const Size(150, 150),
+        minimumSize: Size(MediaQuery.of(context).size.width/5, MediaQuery.of(context).size.height/8), // Tamaño mínimo del botón
         backgroundColor: buttonColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))
       ),
@@ -29,49 +29,97 @@ class ContadorBoton extends StatelessWidget {
 }
 
 
-class ContadorSuperior extends StatelessWidget{
-  final Color color;
+class ContadorSuperior extends StatelessWidget {
   final Color colorLocal;
   final Color colorVisitante;
-  
+  final int contadorLocal;
+  final int contadorVisitante;
+
   const ContadorSuperior({
     super.key,
-    this.color = extra,
     this.colorLocal = local,
-    this.colorVisitante = visitante
+    this.colorVisitante = visitante,
+    required this.contadorLocal,
+    required this.contadorVisitante,
   });
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
-      width: 200,
+      width: double.infinity,
       height: 100,
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration( shape: BoxShape.circle,
-             color: colorLocal),
-          ),
-          Text
-      ],
-      )
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: extra,
+          border: Border.all(color: borde)
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 14,
+              height: 14,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: colorLocal,
+              ),
+            ),
+            Text('Local', style: TextStyle(color: colorLocal)),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: fondo,
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '$contadorLocal',
+                    style: TextStyle(color: colorLocal, fontSize: 24),
+                  ),
+                  const SizedBox(width: 12),
+                  Text('VS', style: TextStyle(color: textogeneral)),
+                  const SizedBox(width: 12),
+                  Text(
+                    '$contadorVisitante',
+                    style: TextStyle(color: colorVisitante, fontSize: 24),
+                  ),
+                ],
+              ),
+            ),
+            Text('Visitante', style: TextStyle(color: colorVisitante)),
+            Container(
+              width: 14,
+              height: 14,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: colorVisitante,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
-
 }
 
 
 class reiniciar extends StatelessWidget {
+
+  final VoidCallback onPressed;
+  final Color color;
+  final String text;
+
   const reiniciar({
     super.key,
     required this.onPressed,
     this.color = extra,
     this.text = 'Reiniciar',
   });
-
-  final VoidCallback onPressed;
-  final Color color;
-  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +131,7 @@ class reiniciar extends StatelessWidget {
           backgroundColor: color,
           foregroundColor: textogeneral,
           padding: const EdgeInsets.symmetric(horizontal: 16),
+          side: BorderSide(color: borde),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
@@ -132,7 +181,7 @@ const Contador({
           Container(
             color: color,
             alignment: Alignment.center,
-            height: MediaQuery.of(context).size.height/2,
+            height: MediaQuery.of(context).size.height/3,
             child: Text(
               '$contador',
               style: const TextStyle(color: textogeneral, fontSize: 100),
