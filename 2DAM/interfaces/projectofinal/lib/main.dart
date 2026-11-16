@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'screens/home.dart';
 import 'themes/theme.dart';
 
+
+//funcion principal
 void main() {
   runApp(const Myapp());
 }
-
+//clase principal 
 class Myapp extends StatelessWidget {
   const Myapp({super.key});
 

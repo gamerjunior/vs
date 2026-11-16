@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../themes/theme.dart';
 
+// Widgets reutilizables para la interfaz del marcador del partido.
+
+// Botón cuadrado con un icono para sumar o restar puntos.
 class ContadorBoton extends StatelessWidget {
   const ContadorBoton({
     super.key,
@@ -29,6 +32,7 @@ class ContadorBoton extends StatelessWidget {
 }
 
 
+// Muestra el marcador global con el nombre del equipo local y visitante.
 class ContadorSuperior extends StatelessWidget {
   final Color colorLocal;
   final Color colorVisitante;
@@ -108,6 +112,7 @@ class ContadorSuperior extends StatelessWidget {
 }
 
 
+// Botón para reiniciar el marcador a su estado inicial.
 class reiniciar extends StatelessWidget {
 
   final VoidCallback onPressed;
@@ -144,6 +149,7 @@ class reiniciar extends StatelessWidget {
   }
 }
 
+// Widget principal del contador por equipo: incluye valor actual y botones de incremento/decremento.
 class Contador extends StatelessWidget{
 
   final int contador;
